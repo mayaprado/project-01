@@ -9,7 +9,7 @@ var playerOne = {
   moves: [],
 };
 var playerTwo = {
-  color: 'green',
+  color: 'blue',
   moves: [],
 };
 var currentPlayer;
@@ -24,6 +24,8 @@ function makeBoard() {
     $boardContainer.append($row);
   }
   $('.0').addClass('header');
+  startGame();
+  eventListeners();
 }
 
 makeBoard();
@@ -55,6 +57,8 @@ function eventListeners() {
 }
 
 function startGame() {
+  playerOne.moves = [];
+  playerTwo.moves = [];
   currentPlayer = playerOne;
   for (var i = 0; i < $('.cell').length; i++) {
     $('.cell')
@@ -62,18 +66,15 @@ function startGame() {
       .removeClass('red');
     $('.cell')
       .eq(i)
-      .removeClass('green');
+      .removeClass('blue');
   }
   $('.cell')
     .eq(3)
     .addClass('red')
     .on('mouseover', function(e) {
       $(e.target).off(e.type, arguments.callee);
-      eventListeners();
     });
 }
-
-startGame();
 
 var cell;
 var cellId;
@@ -84,7 +85,7 @@ function drop() {
   if ($('#' + cell.id).attr('id') == cell.id) {
     if (
       $('#' + cell.id).attr('class') != 'cell red' &&
-      $('#' + cell.id).attr('class') != 'cell green'
+      $('#' + cell.id).attr('class') != 'cell blue'
     ) {
       $('#' + cell.id).removeClass(currentPlayer.color);
       drop();
