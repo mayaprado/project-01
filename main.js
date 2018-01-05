@@ -53,9 +53,7 @@ function eventListeners() {
       });
     $('.cell')
       .eq(i)
-      .click(function(e) {
-        move(e);
-      });
+      .on('click', move);
   }
 }
 
@@ -82,12 +80,12 @@ function startGame() {
 
 var cell;
 var cellId;
-var newId;
 
 function drop() {
   // dropping disk from the first row to the last available cell in the column
   cell.id = cell.id - -7;
   if ($('#' + cell.id).attr('id') == cell.id) {
+    // making sure it will only check cells that exist on the board
     if (
       $('#' + cell.id).attr('class') != 'cell red' &&
       $('#' + cell.id).attr('class') != 'cell blue'
