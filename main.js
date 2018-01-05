@@ -3,33 +3,57 @@ console.log('js connected');
 var $boardContainer = $('<div>').addClass('board-container');
 $('main').append($boardContainer);
 
-var board = {};
+var board = {
+  rows: [],
+  cols: [],
+  diagsL: [],
+  diagsR: [],
+  getRows: getRows,
+  getCols: getCols,
+  getDiagsL: getDiagsL,
+  getDiagsR: getDiagsR,
+  checkRows: checkRows,
+  checkCols: checkCols,
+  checkDiagsL: checkDiagsL,
+  checkDiagsR: checkDiagsR,
+  winLine: [],
+  checkWin: checkWin,
+};
+
+var app = {
+  makeBoard: makeBoard,
+  startGame: startGame,
+  eventListeners: eventListeners,
+};
+
 var playerOne = {
   color: 'red',
   moves: [],
 };
+
 var playerTwo = {
   color: 'blue',
   moves: [],
 };
+
 var currentPlayer;
 
 function makeBoard() {
   // creating game board
   for (var i = 0; i < 7; i++) {
-    var $row = $('<div>').addClass('row ' + i);
-    for (k = 0; k < 7; k++) {
+    var $row = $('<div>').addClass(`row ${i}`);
+    for (var j = 0; j < 7; j++) {
       var $cell = $('<div>').addClass('cell');
       $row.append($cell);
     }
     $boardContainer.append($row);
+    $('.0').addClass('header');
   }
-  $('.0').addClass('header');
-  startGame();
-  eventListeners();
 }
 
-makeBoard();
+app.makeBoard();
+app.eventListeners();
+app.startGame();
 
 for (var i = 0; i < $('.cell').length; i++) {
   // adding id to each cell
@@ -96,7 +120,7 @@ function drop() {
       cell.id = cell.id - 7;
       $('#' + cell.id).addClass(currentPlayer.color);
       currentPlayer.moves.push(cell.id);
-      checkWin();
+      board.checkWin();
       if (playerTwo.moves.length === 21) {
         setTimeout(alert('DRAW!'), 150);
       }
@@ -105,7 +129,7 @@ function drop() {
     cell.id = cell.id - 7;
     $('#' + cell.id).addClass(currentPlayer.color);
     currentPlayer.moves.push(cell.id);
-    checkWin();
+    board.checkWin();
   }
 }
 
@@ -137,83 +161,92 @@ $('main').append(
     .click(startGame)
 );
 
-var rows = [];
-// getting all rows to check for win later
-var row = [];
-for (var i = 0; i < $('.cell').length; i += 7) {
-  row = [];
-  for (var j = i; j < i + 7; j++) {
-    row.push($('.cell').eq(j));
+function getRows() {
+  // getting all rows to check for win later
+  var row = [];
+  for (var i = 0; i < $('.cell').length; i += 7) {
+    row = [];
+    for (var j = i; j < i + 7; j++) {
+      row.push($('.cell').eq(j));
+    }
+    this.rows.push(row);
   }
-  rows.push(row);
 }
 
-var cols = [];
-// getting all columns to check for win later
-var col = [];
-for (var i = 0; i < 7; i++) {
-  col = [];
-  for (var j = i; j < $('.cell').length; j += 7) {
-    col.push($('.cell').eq(j));
+function getCols() {
+  // getting all columns to check for win later
+  var col = [];
+  for (var i = 0; i < 7; i++) {
+    col = [];
+    for (var j = i; j < $('.cell').length; j += 7) {
+      col.push($('.cell').eq(j));
+    }
+    this.cols.push(col);
   }
-  cols.push(col);
 }
 
-var diagsL = [];
-// getting left diagonals
-var diagLeft = [];
-for (var i = 0; i < 2; i++) {
-  diagLeft = [];
-  for (var j = i; j < $('.cell').length; j += 8) {
-    diagLeft.push($('.cell').eq(j));
+function getDiagsL() {
+  // getting left diagonals
+  var diagLeft = [];
+  for (var i = 0; i < 2; i++) {
+    diagLeft = [];
+    for (var j = i; j < $('.cell').length; j += 8) {
+      diagLeft.push($('.cell').eq(j));
+    }
+    this.diagsL.push(diagLeft);
   }
-  diagsL.push(diagLeft);
-}
-for (var i = 2; i < 4; i++) {
-  diagLeft = [];
-  for (var j = i; j < 35; j += 8) {
-    diagLeft.push($('.cell').eq(j));
+  for (var i = 2; i < 4; i++) {
+    diagLeft = [];
+    for (var j = i; j < 35; j += 8) {
+      diagLeft.push($('.cell').eq(j));
+    }
+    this.diagsL.push(diagLeft);
   }
-  diagsL.push(diagLeft);
-}
-for (var i = 7; i < 22; i += 7) {
-  diagLeft = [];
-  for (var j = i; j < $('.cell').length; j += 8) {
-    diagLeft.push($('.cell').eq(j));
+  for (var i = 7; i < 22; i += 7) {
+    diagLeft = [];
+    for (var j = i; j < $('.cell').length; j += 8) {
+      diagLeft.push($('.cell').eq(j));
+    }
+    this.diagsL.push(diagLeft);
   }
-  diagsL.push(diagLeft);
 }
 
-var diagsR = [];
-// getting right diagonals
-var diagRight = [];
-for (var i = 6; i < 43; i += 6) {
-  diagRight.push($('.cell').eq(i));
-}
-diagsR.push(diagRight);
-var diagRight = [];
-for (var i = 5; i < 36; i += 6) {
-  diagRight.push($('.cell').eq(i));
-}
-diagsR.push(diagRight);
-var diagRight = [];
-for (var i = 4; i < 29; i += 6) {
-  diagRight.push($('.cell').eq(i));
-}
-diagsR.push(diagRight);
-var diagRight = [];
-for (var i = 3; i < 22; i += 6) {
-  diagRight.push($('.cell').eq(i));
-}
-diagsR.push(diagRight);
-var diagRight = [];
-for (var i = 13; i < 28; i += 7) {
-  diagRight = [];
-  for (var j = i; j < $('.cell').length; j += 6) {
-    diagRight.push($('.cell').eq(j));
+function getDiagsR() {
+  // getting right diagonals
+  var diagRight = [];
+  for (var i = 6; i < 43; i += 6) {
+    diagRight.push($('.cell').eq(i));
   }
-  diagsR.push(diagRight);
+  this.diagsR.push(diagRight);
+  var diagRight = [];
+  for (var i = 5; i < 36; i += 6) {
+    diagRight.push($('.cell').eq(i));
+  }
+  this.diagsR.push(diagRight);
+  var diagRight = [];
+  for (var i = 4; i < 29; i += 6) {
+    diagRight.push($('.cell').eq(i));
+  }
+  this.diagsR.push(diagRight);
+  var diagRight = [];
+  for (var i = 3; i < 22; i += 6) {
+    diagRight.push($('.cell').eq(i));
+  }
+  this.diagsR.push(diagRight);
+  var diagRight = [];
+  for (var i = 13; i < 28; i += 7) {
+    diagRight = [];
+    for (var j = i; j < $('.cell').length; j += 6) {
+      diagRight.push($('.cell').eq(j));
+    }
+    this.diagsR.push(diagRight);
+  }
 }
+
+board.getRows();
+board.getCols();
+board.getDiagsL();
+board.getDiagsR();
 
 function winner() {
   // announcing a winner
@@ -223,28 +256,25 @@ function winner() {
   }, 150);
 }
 
-var winLine = [];
-
-function checkWin() {
-  // checking for the win
-  for (var i = 0; i < rows.length; i++) {
+function checkRows() {
+  for (var i = 0; i < this.rows.length; i++) {
     // first chrcking every row
-    winLine = [];
-    for (var j = 0; j < rows[i].length; j++) {
-      if (rows[i][j].attr('class') === 'cell ' + currentPlayer.color) {
-        winLine.push(rows[i][j].attr('id'));
+    this.winLine = [];
+    for (var j = 0; j < this.rows[i].length; j++) {
+      if (this.rows[i][j].attr('class') === 'cell ' + currentPlayer.color) {
+        this.winLine.push(this.rows[i][j].attr('id'));
         // if cells in the row contain certain color class push id of those cells in winLine
-        if (winLine.length > 3) {
-          winLine = winLine.sort(function(a, b) {
+        if (this.winLine.length > 3) {
+          this.winLine = this.winLine.sort(function(a, b) {
             return b - a;
           });
           // if winLine is longer than 3 sort the id from bigger to smaller
-          winLine = winLine.map(function(el, indx, arr) {
+          this.winLine = this.winLine.map(function(el, indx, arr) {
             return el - arr[indx + 1];
           });
           // subtract every next id from previous id and returrn a new array
           // consisting only from subtraction results
-          if (winLine.join('').includes(111)) {
+          if (this.winLine.join('').includes(111)) {
             // if joined substruction results contain (111) - there is a winning line
             winner();
           }
@@ -252,67 +282,84 @@ function checkWin() {
       }
     }
   }
-  for (var i = 0; i < cols.length; i++) {
+}
+
+function checkCols() {
+  for (var i = 0; i < this.cols.length; i++) {
     // next checking columns the same way as rows
     // but instead of (111) looking for (777) combination in subtraction results
-    winLine = [];
-    for (var j = 0; j < cols[i].length; j++) {
-      if (cols[i][j].attr('class') === 'cell ' + currentPlayer.color) {
-        winLine.push(cols[i][j].attr('id'));
-        if (winLine.length > 3) {
-          winLine = winLine.sort(function(a, b) {
+    this.winLine = [];
+    for (var j = 0; j < this.cols[i].length; j++) {
+      if (this.cols[i][j].attr('class') === 'cell ' + currentPlayer.color) {
+        this.winLine.push(this.cols[i][j].attr('id'));
+        if (this.winLine.length > 3) {
+          this.winLine = this.winLine.sort(function(a, b) {
             return b - a;
           });
-          winLine = winLine.map(function(el, indx, arr) {
+          this.winLine = this.winLine.map(function(el, indx, arr) {
             return el - arr[indx + 1];
           });
-          if (winLine.join('').includes(777)) {
+          if (this.winLine.join('').includes(777)) {
             winner();
           }
         }
       }
     }
   }
-  for (var i = 0; i < diagsL.length; i++) {
+}
+
+function checkDiagsL() {
+  for (var i = 0; i < this.diagsL.length; i++) {
     // next checking left diagonals
     // looking for (888) combination in subtraction results
-    winLine = [];
-    for (var j = 0; j < diagsL[i].length; j++) {
-      if (diagsL[i][j].attr('class') === 'cell ' + currentPlayer.color) {
-        winLine.push(diagsL[i][j].attr('id'));
-        if (winLine.length > 3) {
-          winLine = winLine.sort(function(a, b) {
+    this.winLine = [];
+    for (var j = 0; j < this.diagsL[i].length; j++) {
+      if (this.diagsL[i][j].attr('class') === 'cell ' + currentPlayer.color) {
+        this.winLine.push(this.diagsL[i][j].attr('id'));
+        if (this.winLine.length > 3) {
+          this.winLine = this.winLine.sort(function(a, b) {
             return b - a;
           });
-          winLine = winLine.map(function(el, indx, arr) {
+          this.winLine = this.winLine.map(function(el, indx, arr) {
             return el - arr[indx + 1];
           });
-          if (winLine.join('').includes(888)) {
+          if (this.winLine.join('').includes(888)) {
             winner();
           }
         }
       }
     }
   }
-  for (var i = 0; i < diagsR.length; i++) {
+}
+
+function checkDiagsR() {
+  for (var i = 0; i < this.diagsR.length; i++) {
     // next checking right diagonals
-    // looking for (666) - devil's number because this is a hell of a function
-    winLine = [];
-    for (var j = 0; j < diagsL[i].length; j++) {
-      if (diagsR[i][j].attr('class') === 'cell ' + currentPlayer.color) {
-        winLine.push(diagsR[i][j].attr('id'));
-        if (winLine.length > 3) {
-          winLine = winLine.sort(function(a, b) {
+    // looking for (666)
+    this.winLine = [];
+    for (var j = 0; j < this.diagsR[i].length; j++) {
+      if (this.diagsR[i][j].attr('class') === 'cell ' + currentPlayer.color) {
+        this.winLine.push(this.diagsR[i][j].attr('id'));
+        if (this.winLine.length > 3) {
+          this.winLine = this.winLine.sort(function(a, b) {
             return b - a;
           });
-          winLine = winLine.map(function(el, indx, arr) {
+          this.winLine = this.winLine.map(function(el, indx, arr) {
             return el - arr[indx + 1];
           });
-          if (winLine.join('').includes(666)) {
+          if (this.winLine.join('').includes(666)) {
             winner();
           }
         }
       }
     }
   }
+}
+
+function checkWin() {
+  // checking for the win
+  this.checkRows();
+  this.checkCols();
+  this.checkDiagsL();
+  this.checkDiagsR();
 }
