@@ -1,13 +1,33 @@
 h1 {
   color: #7a4347;
-  font-size: 32px;
+  font-family: 'Cabin Sketch', cursive;
+  font-size: 68px;
   text-align: center;
-  padding: 5px;
+  padding: 0;
+  margin: 0 auto;
+}
+
+p {
+  font-family: 'Special Elite', cursive;
+  font-size: 24px;
+  color: #7a4347;
+  text-align: center;
+}
+
+ul {
+  font-family: 'Special Elite', cursive;
+  font-size: 24px;
+  color: #7a4347;
+}
+
+li {
+  padding: 10px;
+  font-size: 22px;
 }
 
 #banner {
   color: tomato;
-  font-size: 24px;
+  font-size: 32px;
   text-align: center;
   padding: 5px;
 }
@@ -26,7 +46,7 @@ h1 {
 .header {
   display: flex;
   justify-content: space-between;
-  background: #f79b9e;
+  background: rgba(252, 98, 108, 0.6);
 }
 
 .red {
@@ -53,6 +73,23 @@ main {
   padding: 20px;
 }
 
+#winnerBanner {
+  color: #7a0159;
+  border: solid #7a4347 1px;
+  border-radius: 60px;
+  font-family: 'Cabin Sketch', cursive;
+  background: rgba(252, 98, 108, 0.6);
+  padding: 48px;
+  font-size: 54px;
+  max-width: 220px;
+  text-align: center;
+  opacity: 0;
+  margin: 0 auto;
+  top: 30%;
+  position: absolute;
+  left: 39%;
+}
+
 #startOver {
   color: #7a4347;
   font-size: 24px;
@@ -61,4 +98,25 @@ main {
   border: 2px solid #7a4347;
   display: inline-block;
   margin: 10px auto;
+  font-family: 'Cabin Sketch', cursive;
+  background: rgba(252, 98, 108, 0.6);
+}
+
+.button {
+  color: #7a4347;
+  font-size: 48px;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #7a4347;
+  display: block;
+  margin: 20px auto;
+  font-family: 'Cabin Sketch', cursive;
+  text-decoration: none;
+  max-width: 150px;
+  background: rgba(252, 98, 108, 0.6);
+}
+
+footer {
+  text-align: center;
+  color: #7a4347;
 }

@@ -86,6 +86,7 @@ function startGame() {
   playerOne.moves = [];
   playerTwo.moves = [];
   currentPlayer = playerOne;
+  $('#winnerBanner').css('opacity', '0');
   for (var i = 0; i < $('.cell').length; i++) {
     $('.cell')
       .eq(i)
@@ -103,7 +104,6 @@ function startGame() {
 }
 
 var cell;
-var cellId;
 
 function drop() {
   // dropping disk from the first row to the last available cell in the column
@@ -114,15 +114,26 @@ function drop() {
       $('#' + cell.id).attr('class') != 'cell red' &&
       $('#' + cell.id).attr('class') != 'cell blue'
     ) {
-      $('#' + cell.id).removeClass(currentPlayer.color);
-      drop();
+      $('#' + cell.id).addClass(currentPlayer.color);
+      setTimeout(function() {
+        $('#' + cell.id).removeClass(currentPlayer.color);
+      }, 40);
+      setTimeout(function() {
+        drop();
+      }, 40);
     } else {
       cell.id = cell.id - 7;
       $('#' + cell.id).addClass(currentPlayer.color);
       currentPlayer.moves.push(cell.id);
       board.checkWin();
+      currentPlayer = currentPlayer.color === 'red' ? playerTwo : playerOne;
+      $('#banner')
+        .text(`${currentPlayer.color.toUpperCase()} GOES NEXT`)
+        .css('color', currentPlayer.color);
       if (playerTwo.moves.length === 21) {
-        setTimeout(alert('DRAW!'), 150);
+        $('#winnerBanner')
+          .text('DRAW!')
+          .css('opacity', '1');
       }
     }
   } else {
@@ -130,6 +141,10 @@ function drop() {
     $('#' + cell.id).addClass(currentPlayer.color);
     currentPlayer.moves.push(cell.id);
     board.checkWin();
+    currentPlayer = currentPlayer.color === 'red' ? playerTwo : playerOne;
+    $('#banner')
+      .text(`${currentPlayer.color.toUpperCase()} GOES NEXT`)
+      .css('color', currentPlayer.color);
   }
 }
 
@@ -141,16 +156,12 @@ function move(e) {
     drop: drop,
   };
   cell.drop();
-  currentPlayer = currentPlayer.color === 'red' ? playerTwo : playerOne;
-  $('#banner')
-    .text(currentPlayer.color.toUpperCase() + ' GOES NEXT')
-    .css('color', currentPlayer.color);
 }
 
 $('h1').append(
   $('<div>')
     .attr('id', 'banner')
-    .text(currentPlayer.color.toUpperCase() + ' GOES FIRST')
+    .text(`${currentPlayer.color.toUpperCase()} GOES FIRST`)
 );
 
 $('main').append(
@@ -248,12 +259,17 @@ board.getCols();
 board.getDiagsL();
 board.getDiagsR();
 
+$('body').append(
+  // winner banner
+  $('<div>').attr('id', 'winnerBanner')
+);
+
 function winner() {
   // announcing a winner
   var color = currentPlayer.color;
-  setTimeout(function() {
-    alert(color.toUpperCase() + ' WINS!!!');
-  }, 150);
+  $('#winnerBanner')
+    .text(`${color.toUpperCase()} WINS!!!`)
+    .css('opacity', '1');
 }
 
 function checkRows() {
