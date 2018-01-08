@@ -56,12 +56,6 @@ li {
   background-image: none;
 }
 
-.header .cell {
-  border: none;
-  box-shadow: none;
-  background-color: rgba(252, 98, 108, 0);
-}
-
 .red {
   background-image: url('./images/red.png');
   background-size: 100%;
@@ -72,6 +66,12 @@ li {
   background-image: url('./images/blue.png');
   background-size: 100%;
   background-repeat: no-repeat;
+}
+
+.header .cell {
+  border: none;
+  box-shadow: none;
+  background-color: rgba(252, 98, 108, 0);
 }
 
 main {

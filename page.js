@@ -10,7 +10,7 @@ $('.split').each(function() {
 
 anime.timeline({ loop: false }).add({
   targets: '.split .letter',
-  scale: [4, 1],
+  scale: [5, 1],
   opacity: [0, 1],
   translateZ: 0,
   easing: 'easeOutExpo',
