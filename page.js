@@ -1,5 +1,7 @@
 console.log('js connected');
 
+var gameSound = document.querySelector('.music');
+
 $('.split').each(function() {
   $(this).html(
     $(this)
@@ -19,3 +21,4 @@ anime.timeline({ loop: false }).add({
     return 35 * i;
   },
 });
+gameSound.play();

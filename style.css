@@ -138,3 +138,7 @@ footer {
   display: inline-block;
   line-height: 1em;
 }
+
+.audio {
+  opacity: 0;
+}

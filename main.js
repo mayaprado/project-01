@@ -1,5 +1,7 @@
 console.log('js connected');
 
+var gameSound = document.querySelector('.music');
+
 var $boardContainer = $('<div>').addClass('board-container');
 $('main').append($boardContainer);
 
@@ -86,6 +88,7 @@ function startGame() {
   playerOne.moves = [];
   playerTwo.moves = [];
   currentPlayer = playerOne;
+  gameSound.play();
   $('#winnerBanner').css('opacity', '0');
   for (var i = 0; i < $('.cell').length; i++) {
     $('.cell')
